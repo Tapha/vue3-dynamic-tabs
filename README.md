@@ -1,10 +1,16 @@
-# A Vue component to easily render tabs
+# A Vue component to easily render tabs dynamically
 
 [![Latest Version on NPM](https://img.shields.io/npm/v/vue3-tabs-component.svg?style=flat-square)](https://npmjs.com/package/vue3-tabs-component)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![npm](https://img.shields.io/npm/dt/vue3-tabs-component.svg?style=flat-square)](https://www.npmjs.com/package/vue3-tabs-component)
 
 The package contains a [Vue 3](https://vuejs.org/) component to easily display some tabs.
+
+### Along with the standard Features of the [original](https://github.com/jacobs63/vue3-tabs-component) tabs component, Vue 3 Dynamic Tabs allows you to:
+
+- Set content of tabs to be whatever you want, using vue 3 teleport.
+- Set tab buttons to be wherever you want.
+- Style tabs to look however you want.
 
 This is how they can be used:
 =
