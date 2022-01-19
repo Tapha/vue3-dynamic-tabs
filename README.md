@@ -248,7 +248,7 @@ If you discover any security related issues, please contact [Jakub Potocký](htt
 - [Jakub Potocký](https://github.com/jacobs63)
 - [All Contributors](../../contributors)
 
-**This package is a fork of a fork of the popular `spatie/vue-tabs-component` Vue 2 package, which has been discontinued by Spatie. As well as most recently, the jacobs63/vue3-tabs-component by [Jakub Potocký](https://github.com/jacobs63)**
+**This package is a fork of a fork of the popular `spatie/vue-tabs-component` Vue 2 package, which has been discontinued by Spatie. As well as most recently, the jacobs63/vue3-tabs-component by [Jakub Potocký](https://github.com/jacobs63).**
 
 ## License
 
