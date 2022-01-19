@@ -12,7 +12,7 @@ The package contains a [Vue 3](https://vuejs.org/) component to easily display s
 - Set tab buttons to be wherever you want.
 - Style tabs to look however you want.
 
-This is how they can be used:
+This is how it can be used:
 =
 ```html
 <div>
