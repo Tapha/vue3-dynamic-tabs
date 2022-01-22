@@ -1,98 +1,154 @@
 <template>
-  <section v-show="isActive"
-           :aria-hidden="! isActive"
-           :class="panelClass"
-           :id="computedId"
-           role="tabpanel"
-           ref="tab"
+  <component
+    :is="tag"
+    :aria-controls="tab.hash"
+    :aria-selected="tab.isActive"
+    @click="store.selectTab(tab.hash, $event)"
+    :href="tab.hash"
+    :class="[
+      navItemLinkClass,
+      tab.isDisabled ? navItemLinkDisabledClass : '',
+      tab.isActive ? navItemLinkActiveClass : '',
+    ]"
+    role="tab"
   >
-    <slot/>
-  </section>
+    <span v-if="tabName">{{ tabName }}</span>
+    <slot v-if="!tabName" />
+  </component>
 </template>
 
 <script>
-import {inject, watch, ref, onBeforeMount, onBeforeUnmount} from 'vue';
+import { v4 as uuidv4 } from "uuid";
+import expiringStorage from "../expiringStorage";
+import store from "../store/dynamicTabs";
+import {
+  onMounted,
+  onBeforeMount,
+  onBeforeUnmount,
+  watch,
+  inject,
+  ref,
+  toRefs,
+} from "vue";
 
 export default {
-  name: 'Tab',
+  name: "DynamicTab",
   props: {
     panelClass: {
       type: String,
-      default: 'tabs-component-panel'
+      default: "tabs-component-panel",
+    },
+    tag: {
+      type: String,
+      default: "button",
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
-    name: {
+    tabName: {
       type: String,
-      required: true
+      default: null,
     },
     prefix: {
       type: String,
-      default: ''
+      default: "",
     },
     suffix: {
       type: String,
-      default: ''
+      default: "",
     },
     isDisabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
 
-  setup(props) {
-    const isActive = ref(false)
+  emits: ["changed", "clicked"],
 
-    const tabsProvider = inject('tabsProvider')
-    const addTab = inject('addTab')
-    const updateTab = inject('updateTab')
-    const deleteTab = inject('deleteTab')
+  setup(props, context) {
+    const uuid = uuidv4();
 
-    const header = props.prefix + props.name + props.suffix
-    const computedId = props.id ? props.id : props.name.toLowerCase().replace(/ /g, '-')
-    const hash = '#' + (!props.isDisabled ? computedId : '')
+    const isActive = ref(false);
+
+    const header = props.prefix + props.tabName + props.suffix;
+    const computedId = props.id
+      ? props.id
+      : props.tabName.toLowerCase().replace(/ /g, "-");
+    const hash = "#" + (!props.isDisabled ? computedId : "");
+
+    const tab = {
+      name: props.tabName,
+      header: header,
+      isDisabled: props.isDisabled,
+      hash: hash,
+      index: store.tabs?.length,
+      computedId: computedId,
+    };
 
     watch(
-        () => tabsProvider.activeTabHash,
-        () => {
-          isActive.value = hash === tabsProvider.activeTabHash
-        }
-    )
+      () => store.activeTabHash,
+      () => {
+        isActive.value = hash === store.activeTabHash;
+      }
+    );
 
-    watch(() => Object.assign({}, props), () => {
-      updateTab(computedId, {
-        name: props.name,
-        header: header,
-        isDisabled: props.isDisabled,
-        hash: hash,
-        index: tabsProvider.tabs.length,
-        computedId: computedId
-      })
-    })
+    watch(
+      () => Object.assign({}, props),
+      () => {
+        store.methods.updateTab(computedId, tab);
+      }
+    );
 
     onBeforeMount(() => {
-      addTab({
-        name: props.name,
-        header: header,
-        isDisabled: props.isDisabled,
-        hash: hash,
-        index: tabsProvider.tabs.length,
-        computedId: computedId
-      })
-    })
+      store.methods.addTab(tab);
+    });
 
     onBeforeUnmount(() => {
-      deleteTab(computedId)
-    })
+      store.methods.deleteTab(computedId);
+    });
+
+    onMounted(() => {
+      if (!store.state.tabs.length) {
+        return;
+      }
+
+      window.addEventListener("hashchange", () =>
+        store.selectTab(window.location.hash, Event, context)
+      );
+
+      if (store.methods.findTab(window.location.hash)) {
+        store.selectTab(window.location.hash, Event, context);
+        return;
+      }
+
+      const previousSelectedTabHash = expiringStorage.get(
+        store.state.storageKey
+      );
+
+      if (store.methods.findTab(previousSelectedTabHash)) {
+        store.selectTab(previousSelectedTabHash, Event, context);
+        return;
+      }
+
+      if (
+        store.state.defaultTabHash &&
+        store.methods.findTab("#" + store.state.defaultTabHash)
+      ) {
+        store.selectTab("#" + store.state.defaultTabHash, Event, context);
+        return;
+      }
+
+      store.selectTab(state.tabs[0].hash, Event, context);
+    });
 
     return {
-      header,
-      computedId,
-      hash,
-      isActive
-    }
-  }
+      tab,
+      store,
+      // ...toRefs(state),
+      // selectTab,
+      // findTab
+    };
+  },
 };
 </script>
