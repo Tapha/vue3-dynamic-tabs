@@ -6,14 +6,12 @@
     @click="store.selectTab(tab.hash, $event)"
     :href="tab.hash"
     :class="[
-      navItemLinkClass,
-      tab.isDisabled ? navItemLinkDisabledClass : '',
-      tab.isActive ? navItemLinkActiveClass : '',
+      tab.isDisabled ? diabledClass : '',
+      tab.isActive ? activeClass : '',
     ]"
     role="tab"
   >
     <span v-if="tabName">{{ tabName }}</span>
-    <slot v-if="!tabName" />
   </component>
 </template>
 
@@ -34,27 +32,27 @@ import {
 export default {
   name: "DynamicTab",
   props: {
-    panelClass: {
-      type: String,
-      default: "tabs-component-panel",
-    },
     tag: {
       type: String,
       default: "button",
     },
-    id: {
-      type: String,
-      default: null,
-    },
     tabName: {
       type: String,
-      default: null,
+      default: "tab name here",
     },
     prefix: {
       type: String,
       default: "",
     },
     suffix: {
+      type: String,
+      default: "",
+    },
+    activeClass: {
+      type: String,
+      default: "",
+    },
+    disabledClass: {
       type: String,
       default: "",
     },
@@ -72,10 +70,8 @@ export default {
     const isActive = ref(false);
 
     const header = props.prefix + props.tabName + props.suffix;
-    const computedId = props.id
-      ? props.id
-      : props.tabName.toLowerCase().replace(/ /g, "-");
-    const hash = "#" + (!props.isDisabled ? computedId : "");
+    const computedId = uuid;
+    const hash = "#" + props.tabName.replace(/\s+/g, "-");
 
     const tab = {
       name: props.tabName,
@@ -102,6 +98,7 @@ export default {
 
     onBeforeMount(() => {
       store.methods.addTab(tab);
+      console.log(tab);
     });
 
     onBeforeUnmount(() => {
@@ -109,6 +106,8 @@ export default {
     });
 
     onMounted(() => {
+      store.methods.addTab(tab);
+      console.log(tab);
       if (!store.state.tabs.length) {
         return;
       }
