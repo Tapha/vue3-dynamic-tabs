@@ -59,6 +59,9 @@ const methods = {
   findTab(hash) {
     return state.tabs.find((tab) => tab.hash === hash);
   },
+  findTabByName(tabName) {
+    return state.tabs.find((tab) => tab.name === tabName);
+  },
   deleteTab(computedId) {
     let tabIndex = state.tabs.findIndex((tab) => tab.computedId === computedId);
 
