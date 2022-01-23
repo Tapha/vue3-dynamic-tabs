@@ -1,7 +1,7 @@
 <template>
-  <div v-if="true" style="">
+  <div v-if="store.state.tabs" style="margin: 2em;">
     This is the DynamicTabSettings component that sets up your tabs. You have
-    not entered your props correctly.
+    not added any tabs. Please add some by adding the dynamic-tab component.
   </div>
 </template>
 
@@ -9,8 +9,10 @@
 import expiringStorage from "../expiringStorage";
 import store from "../store/dynamicTabs";
 import { onMounted, provide, toRefs } from "vue";
+import DynamicTab from './DynamicTab.vue';
 
 export default {
+  components: { DynamicTab },
   props: {
     cacheLifetime: {
       default: 5,
@@ -28,14 +30,13 @@ export default {
   emits: ["changed", "clicked"],
 
   setup(props, context) {
+    store.state.cacheLifetime = props.cacheLifetime;
+    store.state.useUrlFragment = props.options.useUrlFragment;
+    store.state.defaultTabHash = props.options.defaultTabHash;
+
+    const storageKey = `vue3-dynamic-tabs.cache.${window.location.host}${window.location.pathname}`;
+    store.state.storageKey = storageKey;
     onMounted(() => {
-      store.state.cacheLifetime = props.cacheLifetime;
-      store.state.useUrlFragment = props.options.useUrlFragment;
-      store.state.defaultTabHash = props.options.defaultTabHash;
-
-      const storageKey = `vue3-dynamic-tabs.cache.${window.location.host}${window.location.pathname}`;
-      store.state.storageKey = storageKey;
-
       if (!store.state.tabs.length) {
         return;
       }
@@ -70,6 +71,7 @@ export default {
     });
     console.log(store);
     return {
+      store
       // ...toRefs(state),
       // selectTab,
       // findTab

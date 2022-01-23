@@ -3,7 +3,7 @@
     :is="tag"
     :aria-controls="tab.hash"
     :aria-selected="tab.isActive"
-    @click="store.selectTab(tab.hash, $event)"
+    @click="selectTab(tab.hash, $event, context)"
     :href="tab.hash"
     :class="[
       tab.isDisabled ? diabledClass : '',
@@ -78,8 +78,47 @@ export default {
       header: header,
       isDisabled: props.isDisabled,
       hash: hash,
-      index: store.tabs?.length,
+      index: store.state.tabs.length,
       computedId: computedId,
+    };
+
+    store.methods.addTab(tab);
+
+    const selectTab = (selectedTabHash, event) => {
+      if (event && !store.state.useUrlFragment) {
+        event.preventDefault();
+      }
+
+      const selectedTab = store.methods.findTab(selectedTabHash);
+
+      if (!selectedTab) {
+        return;
+      }
+
+      if (event && selectedTab.isDisabled) {
+        event.preventDefault();
+        return;
+      }
+
+      if (store.state.lastActiveTabHash === selectedTab.hash) {
+        context.emit("clicked", { tab: selectedTab });
+        return;
+      }
+
+      store.state.tabs.forEach((tab) => {
+        tab.isActive = tab.hash === selectedTab.hash;
+      });
+
+      context.emit("changed", { tab: selectedTab });
+
+      store.state.lastActiveTabHash = store.state.activeTabHash =
+        selectedTab.hash;
+
+      expiringStorage.set(
+        store.state.storageKey,
+        selectedTab.hash,
+        store.state.cacheLifetime
+      );
     };
 
     watch(
@@ -96,28 +135,21 @@ export default {
       }
     );
 
-    onBeforeMount(() => {
-      store.methods.addTab(tab);
-      console.log(tab);
-    });
-
     onBeforeUnmount(() => {
       store.methods.deleteTab(computedId);
     });
 
     onMounted(() => {
-      store.methods.addTab(tab);
-      console.log(tab);
       if (!store.state.tabs.length) {
         return;
       }
 
       window.addEventListener("hashchange", () =>
-        store.selectTab(window.location.hash, Event, context)
+        selectTab(window.location.hash)
       );
 
       if (store.methods.findTab(window.location.hash)) {
-        store.selectTab(window.location.hash, Event, context);
+        selectTab(window.location.hash);
         return;
       }
 
@@ -126,7 +158,7 @@ export default {
       );
 
       if (store.methods.findTab(previousSelectedTabHash)) {
-        store.selectTab(previousSelectedTabHash, Event, context);
+        selectTab(previousSelectedTabHash);
         return;
       }
 
@@ -134,19 +166,18 @@ export default {
         store.state.defaultTabHash &&
         store.methods.findTab("#" + store.state.defaultTabHash)
       ) {
-        store.selectTab("#" + store.state.defaultTabHash, Event, context);
+        selectTab("#" + store.state.defaultTabHash);
         return;
       }
 
-      store.selectTab(state.tabs[0].hash, Event, context);
+      selectTab(state.tabs[0].hash);
     });
 
     return {
       tab,
       store,
+      selectTab,
       // ...toRefs(state),
-      // selectTab,
-      // findTab
     };
   },
 };
