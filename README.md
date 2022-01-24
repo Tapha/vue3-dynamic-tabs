@@ -94,14 +94,16 @@ On your page you can now use html like this to render tabs:
     <dynamic-tab-settings
       :options="{
         useUrlFragment: true,
-        defaultTabHash: 'test-1'
+        defaultTabHash: 'tab-1'
       }"
     />
     <dynamic-tab
+      id='tab-1'
       tag="a"
       tabName="tab 1"
     />
     <dynamic-tab
+      id='tab-2'
       tag="a"
       tabName="tab 2"
     />
