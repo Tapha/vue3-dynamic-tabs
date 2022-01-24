@@ -8,7 +8,7 @@ The package contains a [Vue 3](https://vuejs.org/) component to easily display t
 
 ### Vue 3 Dynamic Tabs allows you to:
 
-- Set content of tabs to be whatever you want, using vue 3 teleport.
+- Set content of tabs to be whatever you want.
 - Set tab buttons to be wherever you want.
 - Style tabs to look however you want.
 
