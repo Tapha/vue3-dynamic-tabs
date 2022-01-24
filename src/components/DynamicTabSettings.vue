@@ -69,12 +69,8 @@ export default {
 
       store.selectTab(store.state.tabs[0].hash, Event, context);
     });
-    console.log(store);
     return {
       store
-      // ...toRefs(state),
-      // selectTab,
-      // findTab
     };
   },
 };

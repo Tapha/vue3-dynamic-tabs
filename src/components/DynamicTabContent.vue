@@ -5,8 +5,7 @@
     :id="tab.computedId"
     role="tabpanel"
   >
-    <!-- <slot/> -->
-    Put back slot when making live.
+    <slot/>
   </section>
 </template>
 
@@ -45,7 +44,6 @@ export default {
         tab = store.methods.findTabByName(props.tabName);
         hash = tab.hash;
         isActive.value = hash === store.state.activeTabHash;
-        console.log(isActive.value);
       }
     );
 
