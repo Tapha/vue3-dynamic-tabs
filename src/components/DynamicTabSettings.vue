@@ -1,5 +1,5 @@
 <template>
-  <div v-if="store.state.tabs" style="margin: 2em;">
+  <div v-if="!store.state.tabs" style="margin: 2em;">
     This is the DynamicTabSettings component that sets up your tabs. You have
     not added any tabs. Please add some by adding the dynamic-tab component.
   </div>
