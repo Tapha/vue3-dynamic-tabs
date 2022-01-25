@@ -12,34 +12,24 @@ The package contains a [Vue 3](https://vuejs.org/) component to easily display t
 - Set tab buttons to be wherever you want.
 - Style tabs to look however you want.
 
-This is how it can be used:
-=
+# This is how it can be used:
+
 ```html
 <div>
-    <dynamic-tab-settings
-      :options="{
+  <dynamic-tab-settings
+    :options="{
         useUrlFragment: true,
         defaultTabHash: 'test-1'
       }"
-    />
-    <dynamic-tab
-      tag="a"
-      tabName="tab 1"
-    />
-    <dynamic-tab
-      tag="a"
-      tabName="tab 2"
-    />
-    <dynamic-tab-content
-      tabName="tab 1"
-    >
-      This is the content of the first tab
-    </dynamic-tab-content>
-    <dynamic-tab-content
-      tabName="tab 2"
-    >
-      This is the content of the second tab
-    </dynamic-tab-content>
+  />
+  <dynamic-tab tag="a" tabName="tab 1" />
+  <dynamic-tab tag="a" tabName="tab 2" />
+  <dynamic-tab-content tabName="tab 1">
+    This is the content of the first tab
+  </dynamic-tab-content>
+  <dynamic-tab-content tabName="tab 2">
+    This is the content of the second tab
+  </dynamic-tab-content>
 </div>
 ```
 
@@ -66,57 +56,53 @@ npm install vue3-dynamic-tabs --save
 The most common use case is to register the components globally:
 
 ```js
-import { createApp } from 'vue'
-import {DynamicTab, DynamicTabContent, DynamicTabSettings} from 'vue3-dynamic-tabs';
+import { createApp } from "vue";
+import {
+  DynamicTab,
+  DynamicTabContent,
+  DynamicTabSettings,
+} from "vue3-dynamic-tabs";
 
 createApp(App)
-    .component('dynamic-tab', DynamicTab)
-    .component('dynamic-tab-content', DynamicTabContent)
-    .component('dynamic-tab-settings', DynamicTabSettings)
-    .mount('#app')
+  .component("dynamic-tab", DynamicTab)
+  .component("dynamic-tab-content", DynamicTabContent)
+  .component("dynamic-tab-settings", DynamicTabSettings)
+  .mount("#app");
 ```
 
 Alternatively you can do this to register the components:
 
 ```js
-import Vue from 'vue';
-import {DynamicTab, DynamicTabContent, DynamicTabSettings} from 'vue3-dynamic-tabs';
+import Vue from "vue";
+import {
+  DynamicTab,
+  DynamicTabContent,
+  DynamicTabSettings,
+} from "vue3-dynamic-tabs";
 
-Vue.component('dynamic-tab', DynamicTab);
-Vue.component('dynamic-tab-content', DynamicTabContent);
-Vue.component('dynamic-tab-settings', DynamicTabSettings);
+Vue.component("dynamic-tab", DynamicTab);
+Vue.component("dynamic-tab-content", DynamicTabContent);
+Vue.component("dynamic-tab-settings", DynamicTabSettings);
 ```
 
-On your page you can now use html like this to render tabs: 
+On your page you can now use html like this to render tabs:
 
 ```html
 <div>
-    <dynamic-tab-settings
-      :options="{
+  <dynamic-tab-settings
+    :options="{
         useUrlFragment: true,
         defaultTabHash: 'tab-1'
       }"
-    />
-    <dynamic-tab
-      id='tab-1'
-      tag="a"
-      tabName="tab 1"
-    />
-    <dynamic-tab
-      id='tab-2'
-      tag="a"
-      tabName="tab 2"
-    />
-    <dynamic-tab-content
-      tabName="tab 1"
-    >
-      This is the content of the first tab
-    </dynamic-tab-content>
-    <dynamic-tab-content
-      tabName="tab 2"
-    >
-      This is the content of the second tab
-    </dynamic-tab-content>
+  />
+  <dynamic-tab id="tab-1" tag="a" tabName="tab 1" />
+  <dynamic-tab id="tab-2" tag="a" tabName="tab 2" />
+  <dynamic-tab-content tabName="tab 1">
+    This is the content of the first tab
+  </dynamic-tab-content>
+  <dynamic-tab-content tabName="tab 2">
+    This is the content of the second tab
+  </dynamic-tab-content>
 </div>
 ```
 
@@ -145,25 +131,26 @@ When using with other libraries that use the url fragment, you can disable modif
 ```
 
 ### Callbacks
+
 Tabs have two events to which you can bind: `changed` and `clicked`
 
 ```html
-<dynamic-tab @clicked="tabClicked" @changed="tabChanged">
-  ...
-</dynamic-tab>
+<dynamic-tab @clicked="tabClicked" @changed="tabChanged"> ... </dynamic-tab>
 ```
+
 For example:
+
 ```js
 export default {
-    methods: {
-        tabClicked (selectedTab) {
-            console.log('Current tab re-clicked:' + selectedTab.tab.name)
-        },
-        tabChanged (selectedTab) {
-            console.log('Tab changed to:' + selectedTab.tab.name)
-        }
-    }
-}
+  methods: {
+    tabClicked(selectedTab) {
+      console.log("Current tab re-clicked:" + selectedTab.tab.name);
+    },
+    tabChanged(selectedTab) {
+      console.log("Tab changed to:" + selectedTab.tab.name);
+    },
+  },
+};
 ```
 
 `changed` is emitted when the tab changes and can be used as handle to load data on request.
@@ -175,7 +162,7 @@ You can add a suffix and a prefix to the tab by using the `suffix` and `prefix` 
 
 ```html
 <dynamic-tab prefix="my prefix - " name="First tab" suffix=" - my suffix">
-    First tab content
+  First tab content
 </dynamic-tab>
 ```
 
@@ -185,20 +172,19 @@ The fragment that's added to the url when clicking the tab will only be based on
 
 ### Customizing fragments
 
-When clicking on a tab it's name will be used as a fragment in the url. For example clicking on the `Second tab` will append `#second-tab` to the current url. 
+When clicking on a tab it's name will be used as a fragment in the url. For example clicking on the `Second tab` will append `#second-tab` to the current url.
 
 You can customize that fragment by using the `id` attribute.
 
 ```html
 <div>
-    <dynamic-tab id="custom-fragment" name="My tab">
-        First tab content
-    </dynamic-tab>
+  <dynamic-tab id="custom-fragment" name="My tab">
+    First tab content
+  </dynamic-tab>
 </div>
 ```
 
 Clicking on `My tab` will then append `#custom-fragment` to the url.
-
 
 ### Setting a default tab
 
@@ -206,30 +192,26 @@ When disabling the cache, it can be useful to specify a default tab to load whic
 
 ```html
 <dynamic-tab-settings
-      :options="{
+  :options="{
         defaultTabHash: 'tab-1'
       }"
-    />
-    <dynamic-tab
-      id='tab-1'   
-      tag="a"
-      tabName="tab 1"
-    />
-    <dynamic-tab
-      id='tab-2'
-      tag="a"
-      tabName="tab 2"
-    />
-    <dynamic-tab-content
-      tabName="tab 1"
-    >
-      This is the content of the first tab
-    </dynamic-tab-content>
-    <dynamic-tab-content
-      tabName="tab 2"
-    >
-      This is the content of the second tab
-    </dynamic-tab-content>
+/>
+<dynamic-tab 
+    id="tab-1" 
+    tag="a" 
+    tabName="tab 1" 
+/>
+<dynamic-tab 
+    id="tab-2" 
+    tag="a" 
+    tabName="tab 2" 
+/>
+<dynamic-tab-content tabName="tab 1">
+  This is the content of the first tab
+</dynamic-tab-content>
+<dynamic-tab-content tabName="tab 2">
+  This is the content of the second tab
+</dynamic-tab-content>
 ```
 
 ### CSS
@@ -237,6 +219,7 @@ When disabling the cache, it can be useful to specify a default tab to load whic
 Each node can be styled by specifying classes.
 
 If no custom classes are set, the following classes are used as default:
+
 ```html
 
 ```
