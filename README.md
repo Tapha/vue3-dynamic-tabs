@@ -196,16 +196,8 @@ When disabling the cache, it can be useful to specify a default tab to load whic
         defaultTabHash: 'tab-1'
       }"
 />
-<dynamic-tab 
-    id="tab-1" 
-    tag="a" 
-    tabName="tab 1" 
-/>
-<dynamic-tab 
-    id="tab-2" 
-    tag="a" 
-    tabName="tab 2" 
-/>
+<dynamic-tab id="tab-1" tag="a" tabName="tab 1" />
+<dynamic-tab id="tab-2" tag="a" tabName="tab 2" />
 <dynamic-tab-content tabName="tab 1">
   This is the content of the first tab
 </dynamic-tab-content>
