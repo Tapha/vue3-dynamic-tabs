@@ -243,7 +243,7 @@ If no custom classes are set, the following classes are used as default:
 
 ## Security
 
-If you discover any security related issues, please contact [Jakub Potocký](https://github.com/jacobs63) instead of using the issue tracker.
+If you discover any security related issues, please contact [Tapha](https://github.com/Tapha) instead of using the issue tracker.
 
 ## Credits
 
