@@ -33,7 +33,13 @@ The package contains a [Vue 3](https://vuejs.org/) component to easily display t
 </div>
 ```
 
-Be sure to include the components in the correct order, as seen above to get the components to work as intended. These can be placed anywhere on the page, as long as they follow this order. `<dynamic-tab-settings>` is where the other components are initialized so be sure to always include that first. Then you add the tabs components, followed by the tab content components. Both of these again, in correct order. 
+Be sure to include the components in the correct order, as seen above to get the components to work as intended. These can be placed anywhere on the page, as long as they follow this order.
+
+`<dynamic-tab-settings>` is where the other components are initialized so be sure to always include that first.
+
+Then you add the `<dynamic-tab>` components, followed by the `<dynamic-tab-content>` components. Both of these again, in correct order.
+
+`<dynamic-tab>` and `<dynamic-tab-content>` components are linked by `'tabName'` attributes.
 
 When reloading the page the component will automatically [display the tab that was previously opened](https://github.com/Tapha/vue3-dynamic-tabs#disable-modifying-the-url-fragment).
 
