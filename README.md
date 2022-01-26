@@ -10,20 +10,25 @@ The package contains a [Vue 3](https://vuejs.org/) component to easily display t
 
 - Set content of tabs to be whatever you want.
 - Set tab buttons to be wherever you want.
-- Style tabs to look however you want.
+- Style tabs and tab content areas to look however you want.
+
+Its goal is to be the most open-ended, flexible tab system you can find.
 
 # This is how it can be used:
 
 ```html
 <div>
+  <!-- Your Tab Settings -->
   <dynamic-tab-settings
     :options="{
         useUrlFragment: true,
         defaultTabHash: 'test-1'
       }"
   />
+  <!-- Your Tabs -->
   <dynamic-tab tag="a" tabName="tab 1" />
   <dynamic-tab tag="a" tabName="tab 2" />
+  <!-- Your Tab Content -->
   <dynamic-tab-content tabName="tab 1">
     This is the content of the first tab
   </dynamic-tab-content>
@@ -164,6 +169,10 @@ export default {
 `changed` is emitted when the tab changes and can be used as handle to load data on request.
 `clicked` is emitted when an active tab is re-clicked and can be used to e.g. reload the data in the current tab.
 
+### Setting a html element tag to tabs or tab-content
+
+You can set the type of html element you want either tabs or tab-components to be by applying the 'tag' attribute to any of these two components. For example: `<dynamic-tab tag='a'>`, which will set the component to be an anchor link element. By defult `<dynamic-tab>` components are `button` elements and `<dynamic-tab-content>` components are `section` elements.
+
 ### Adding a suffix and a prefix to the tab name
 
 You can add a suffix and a prefix to the tab by using the `suffix` and `prefix` attributes, which can contain HTML.
@@ -216,13 +225,19 @@ When disabling the cache, it can be useful to specify a default tab to load whic
 
 ### CSS
 
-Each node can be styled by specifying classes.
-
-If no custom classes are set, the following classes are used as default:
+You can add your own styles to the tag and tag content components by simply adding your own css classes to them, like this:
 
 ```html
-
+<dynamic-tab
+  id="tab-1"
+  tabName="Preview"
+  class="h-8 px-3 py-1 text-sm font-medium text-gray-600 transition border border-gray-200 rounded-r-none shadow active:shadow-inner rounded-l-md focus:outline-none bg-gray-50 hover:bg-gray-100 active:bg-gray-200"
+>
+  Preview
+</dynamic-tab>
 ```
+
+TailwindCSS classes can also be used, as in the above example.
 
 ## Security
 
@@ -237,7 +252,7 @@ If you discover any security related issues, please contact [Tapha](https://gith
 - [Jakub Potocký](https://github.com/jacobs63)
 - [All Contributors](../../contributors)
 
-**This package is a fork of a fork of the popular `spatie/vue-tabs-component` Vue 2 package, which has been discontinued by Spatie. As well as most recently, the `jacobs63/vue3-tabs-component` by [Jakub Potocký](https://github.com/jacobs63).**
+**This package is a fork of a fork of the popular `spatie/vue-tabs-component` Vue 2 package, which has been discontinued by Spatie. As well as most recently, the `jacobs63/vue3-tabs-component` fork of that library, by [Jakub Potocký](https://github.com/jacobs63).**
 
 ## License
 
