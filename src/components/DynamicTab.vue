@@ -73,6 +73,10 @@ export default {
   setup(props, context) {
     let { slots } = context;
 
+    let hasDynamicTabSlot = computed(() => {
+      return !!slots.dynamicTabSlot;
+    });
+
     const uuid = uuidv4();
 
     const isActive = ref(false);
@@ -142,10 +146,6 @@ export default {
         store.methods.updateTab(computedId, tab);
       }
     );
-
-    const hasDynamicTabSlot = computed(() => {
-      return !!slots.dynamicTabSlot;
-    });
 
     onBeforeUnmount(() => {
       store.methods.deleteTab(computedId);
