@@ -11,7 +11,8 @@
     ]"
     role="tab"
   >
-    <span v-if="tabName">{{ tabName }}</span>
+    <span v-if="!hasDynamicTabSlot">{{ tabName }}</span>
+    <slot name="dynamicTabSlot" v-if="hasDynamicTabSlot" />
   </component>
 </template>
 
@@ -27,6 +28,7 @@ import {
   inject,
   ref,
   toRefs,
+  computed,
 } from "vue";
 
 export default {
@@ -69,6 +71,8 @@ export default {
   emits: ["changed", "clicked"],
 
   setup(props, context) {
+    const { slots } = context;
+
     const uuid = uuidv4();
 
     const isActive = ref(false);
@@ -139,6 +143,10 @@ export default {
       }
     );
 
+    const hasDynamicTabSlot = computed(() => {
+      return !!slots.dynamicTabSlot;
+    });
+
     onBeforeUnmount(() => {
       store.methods.deleteTab(computedId);
     });
@@ -180,8 +188,7 @@ export default {
     return {
       tab,
       store,
-      selectTab,
-      // ...toRefs(state),
+      selectTab
     };
   },
 };

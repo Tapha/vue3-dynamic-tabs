@@ -1,12 +1,13 @@
 <template>
-  <section
+  <component
+    :is="tag"
     v-show="isActive"
     :aria-hidden="!isActive"
     :id="tab.computedId"
     role="tabpanel"
   >
     <slot/>
-  </section>
+  </component>
 </template>
 
 <script>
@@ -15,6 +16,10 @@ import store from "../store/dynamicTabs";
 export default {
   name: "DynamicTabContent",
   props: {
+    tag: {
+      type: String,
+      default: "section",
+    },
     tabName: {
       type: String,
       required: true,
