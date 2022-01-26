@@ -71,7 +71,7 @@ export default {
   emits: ["changed", "clicked"],
 
   setup(props, context) {
-    const { slots } = context;
+    let { slots } = context;
 
     const uuid = uuidv4();
 
