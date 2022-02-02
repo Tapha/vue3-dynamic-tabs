@@ -97,7 +97,7 @@ export default {
     store.methods.addTab(tab);
 
     const tabClicked = (tabHash, event) => {
-      store.selectTab(tab.hash, context, $event);
+      store.selectTab(tabHash, context, event);
     }
 
     watch(
@@ -119,7 +119,7 @@ export default {
     });
 
     onMounted(() => {
-
+      console.log(store);
     });
 
     return {
