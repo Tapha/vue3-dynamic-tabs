@@ -22,7 +22,7 @@ function selectTab(selectedTabHash, context, event) {
 
   const selectedTab = methods.findTab(selectedTabHash);
 
-  state.storageKey = state.storageKey + selectedTabHash;
+  state.storageKey = storageKey + methods.findTab(selectedTabHash).computedId;
 
   if (!selectedTab) {
     return;
