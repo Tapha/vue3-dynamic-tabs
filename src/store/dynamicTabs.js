@@ -4,47 +4,47 @@ import { reactive } from "vue";
 const storageKey = `vue3-dynamic-tabs.cache.${window.location.host}${window.location.pathname}`;
 
 const state = reactive({
-  useUrlFragment: true,
+  useUrlFragment: false,
   defaultTabHash: null,
   activeTabHash: "",
   lastActiveTabHash: "",
   cacheLifetime: {
-    default: 5
+    default: 5,
   },
-  storageKey, 
+  storageKey: storageKey,
   tabs: [],
 });
 
-function selectTab(selectedTabHash, event, context) {
-    if (event && !state.useUrlFragment) {
-        event.preventDefault();
-    }
+function selectTab(selectedTabHash, context, event) {
+  if (event && !state.useUrlFragment) {
+    event.preventDefault();
+  }
 
-    const selectedTab = methods.findTab(selectedTabHash);
+  const selectedTab = methods.findTab(selectedTabHash);
 
-    if (!selectedTab) {
-        return;
-    }
+  if (!selectedTab) {
+    return;
+  }
 
-    if (event && selectedTab.isDisabled) {
-        event.preventDefault();
-        return;
-    }
+  if (event && selectedTab.isDisabled) {
+    event.preventDefault();
+    return;
+  }
 
-    if (state.lastActiveTabHash === selectedTab.hash) {
-        context.emit("clicked", { tab: selectedTab });
-        return;
-    }
+  if (state.lastActiveTabHash === selectedTab.hash) {
+    context.emit("clicked", { tab: selectedTab });
+    return;
+  }
 
-    state.tabs.forEach((tab) => {
-        tab.isActive = tab.hash === selectedTab.hash;
-    });
+  state.tabs.forEach((tab) => {
+    tab.isActive = tab.hash === selectedTab.hash;
+  });
 
-    context.emit("changed", { tab: selectedTab });
+  context.emit("changed", { tab: selectedTab });
 
-    state.lastActiveTabHash = state.activeTabHash = selectedTab.hash;
+  state.lastActiveTabHash = state.activeTabHash = selectedTab.hash;
 
-    expiringStorage.set(state.storageKey, selectedTab.hash, state.cacheLifetime);
+  expiringStorage.set(state.storageKey, selectedTab.hash, state.cacheLifetime);
 }
 
 const methods = {
@@ -70,7 +70,7 @@ const methods = {
 };
 
 export default {
-    state,
-    methods,
-    selectTab
+  state,
+  methods,
+  selectTab,
 };

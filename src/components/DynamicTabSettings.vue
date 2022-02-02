@@ -8,7 +8,7 @@
 <script>
 import expiringStorage from "../expiringStorage";
 import store from "../store/dynamicTabs";
-import { onMounted, provide, toRefs } from "vue";
+import { onMounted } from "vue";
 import DynamicTab from './DynamicTab.vue';
 
 export default {
@@ -27,35 +27,34 @@ export default {
     },
   },
 
-  emits: ["changed", "clicked"],
+  emits: ["changed"],
 
   setup(props, context) {
     store.state.cacheLifetime = props.cacheLifetime;
     store.state.useUrlFragment = props.options.useUrlFragment;
     store.state.defaultTabHash = props.options.defaultTabHash;
 
-    const storageKey = `vue3-dynamic-tabs.cache.${window.location.host}${window.location.pathname}`;
-    store.state.storageKey = storageKey;
     onMounted(() => {
       if (!store.state.tabs.length) {
         return;
       }
 
-      window.addEventListener("hashchange", () =>
-        store.selectTab(window.location.hash, Event, context)
-      );
+      /* May want to remove this */
+      // window.addEventListener("hashchange", () =>
+      //   store.selectTab(window.location.hash)
+      // );
 
-      if (store.methods.findTab(window.location.hash)) {
-        store.selectTab(window.location.hash, Event, context);
-        return;
-      }
+      // if (store.methods.findTab(window.location.hash)) {
+      //   store.selectTab(window.location.hash);
+      //   return;
+      // }
 
       const previousSelectedTabHash = expiringStorage.get(
         store.state.storageKey
       );
 
       if (store.methods.findTab(previousSelectedTabHash)) {
-        store.selectTab(previousSelectedTabHash, Event, context);
+        store.selectTab(previousSelectedTabHash, context);
         return;
       }
 
@@ -63,11 +62,11 @@ export default {
         store.state.defaultTabHash &&
         store.methods.findTab("#" + store.state.defaultTabHash)
       ) {
-        store.selectTab("#" + store.state.defaultTabHash, Event, context);
+        store.selectTab("#" + store.state.defaultTabHash, context);
         return;
       }
 
-      store.selectTab(store.state.tabs[0].hash, Event, context);
+      store.selectTab(store.state.tabs[0].hash, context);
     });
     return {
       store

@@ -3,7 +3,7 @@
     :is="tag"
     :aria-controls="tab.hash"
     :aria-selected="tab.isActive"
-    @click="selectTab(tab.hash, $event, context)"
+    @click="tabClicked(tab.hash, $event)"
     :href="tab.hash"
     :class="[
       tab.isDisabled ? diabledClass : '',
@@ -96,42 +96,9 @@ export default {
 
     store.methods.addTab(tab);
 
-    const selectTab = (selectedTabHash, event) => {
-      if (event && !store.state.useUrlFragment) {
-        event.preventDefault();
-      }
-
-      const selectedTab = store.methods.findTab(selectedTabHash);
-
-      if (!selectedTab) {
-        return;
-      }
-
-      if (event && selectedTab.isDisabled) {
-        event.preventDefault();
-        return;
-      }
-
-      if (store.state.lastActiveTabHash === selectedTab.hash) {
-        context.emit("clicked", { tab: selectedTab });
-        return;
-      }
-
-      store.state.tabs.forEach((tab) => {
-        tab.isActive = tab.hash === selectedTab.hash;
-      });
-
-      context.emit("changed", { tab: selectedTab });
-
-      store.state.lastActiveTabHash = store.state.activeTabHash =
-        selectedTab.hash;
-
-      expiringStorage.set(
-        store.state.storageKey,
-        selectedTab.hash,
-        store.state.cacheLifetime
-      );
-    };
+    const tabClicked = (tabHash, event) => {
+      store.selectTab(tab.hash, context, $event);
+    }
 
     watch(
       () => store.activeTabHash,
@@ -152,44 +119,13 @@ export default {
     });
 
     onMounted(() => {
-      if (!store.state.tabs.length) {
-        return;
-      }
 
-      window.addEventListener("hashchange", () =>
-        selectTab(window.location.hash)
-      );
-
-      if (store.methods.findTab(window.location.hash)) {
-        selectTab(window.location.hash);
-        return;
-      }
-
-      const previousSelectedTabHash = expiringStorage.get(
-        store.state.storageKey
-      );
-
-      if (store.methods.findTab(previousSelectedTabHash)) {
-        selectTab(previousSelectedTabHash);
-        return;
-      }
-
-      if (
-        store.state.defaultTabHash &&
-        store.methods.findTab("#" + store.state.defaultTabHash)
-      ) {
-        selectTab("#" + store.state.defaultTabHash);
-        return;
-      }
-
-      selectTab(state.tabs[0].hash);
     });
 
     return {
       tab,
       store,
-      selectTab
-    };
+      tabClicked
   },
 };
 </script>

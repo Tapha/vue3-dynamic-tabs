@@ -171,7 +171,7 @@ export default {
 
 ### Setting a html element tag to tabs or tab-content
 
-You can set the type of html element you want either tabs or tab-components to be by applying the 'tag' attribute to any of these two components. For example: `<dynamic-tab tag='a'>`, which will set the component to be an anchor link element. By defult `<dynamic-tab>` components are `button` elements and `<dynamic-tab-content>` components are `section` elements.
+You can set the type of html element you want either tabs or tab-components to be by applying the 'tag' attribute to any of these two components. For example: `<dynamic-tab tag='a'>`, which will set the component to be an anchor link element. By default `<dynamic-tab>` components are `button` elements and `<dynamic-tab-content>` components are `section` elements.
 
 ### Adding a suffix and a prefix to the tab name
 

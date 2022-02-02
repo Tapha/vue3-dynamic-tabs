@@ -41,14 +41,13 @@ export default {
   setup(props) {
     const isActive = ref(false);
     let tab = store.methods.findTabByName(props.tabName);
-    let hash = "";
+    isActive.value = tab.hash? === store.state.activeTabHash;
 
     watch(
       () => store.state.activeTabHash,
       () => {
         tab = store.methods.findTabByName(props.tabName);
-        hash = tab.hash;
-        isActive.value = hash === store.state.activeTabHash;
+        isActive.value = tab.hash === store.state.activeTabHash;
       }
     );
 
