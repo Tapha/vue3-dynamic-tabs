@@ -22,8 +22,6 @@ function selectTab(selectedTabHash, context, event) {
 
   const selectedTab = methods.findTab(selectedTabHash);
 
-  state.storageKey = storageKey + methods.findTab(selectedTabHash).computedId;
-
   if (!selectedTab) {
     return;
   }
@@ -46,7 +44,9 @@ function selectTab(selectedTabHash, context, event) {
 
   state.lastActiveTabHash = state.activeTabHash = selectedTab.hash;
 
-  expiringStorage.set(state.storageKey, selectedTab.hash, state.cacheLifetime);
+  let lastComputedId = methods.getComputedId(state.lastActiveTabHash);
+
+  expiringStorage.set(state.storageKey, lastComputedId, state.cacheLifetime);
 }
 
 const methods = {
@@ -63,6 +63,12 @@ const methods = {
   },
   findTabByName(tabName) {
     return state.tabs.find((tab) => tab.name === tabName);
+  },
+  findTabByComputedId(computedId) {
+    return state.tabs.find((tab) => tab.computedId === computedId);
+  },
+  getComputedId(hash) {
+    return state.tabs.find((tab) => tab.hash === hash);
   },
   deleteTab(computedId) {
     let tabIndex = state.tabs.findIndex((tab) => tab.computedId === computedId);

@@ -49,9 +49,11 @@ export default {
       //   return;
       // }
 
-      const previousSelectedTabHash = expiringStorage.get(
+      const lastComputedId = expiringStorage.get(
         store.state.storageKey
       );
+
+      const previousSelectedTabHash = store.methods.findTabByComputedId(lastComputedId);
 
       if (store.methods.findTab(previousSelectedTabHash)) {
         store.selectTab(previousSelectedTabHash, context);

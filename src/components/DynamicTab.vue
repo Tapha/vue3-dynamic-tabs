@@ -34,10 +34,6 @@ import {
 export default {
   name: "DynamicTab",
   props: {
-    id: {
-      type: String,
-      default: null,
-    },
     tag: {
       type: String,
       default: "button",
@@ -82,7 +78,7 @@ export default {
     const isActive = ref(false);
 
     const header = props.prefix + props.tabName + props.suffix;
-    const computedId = props.id ? props.id : uuid;
+    const computedId = uuid;
     const hash = "#" + (!props.isDisabled ? computedId : "");
 
     const tab = {
