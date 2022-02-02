@@ -36,7 +36,7 @@ export default {
   props: {
     id: {
       type: String,
-      default: null
+      default: null,
     },
     tag: {
       type: String,
@@ -83,7 +83,7 @@ export default {
 
     const header = props.prefix + props.tabName + props.suffix;
     const computedId = props.id ? props.id : uuid;
-    const hash = '#' + (!props.isDisabled ? computedId : '');
+    const hash = "#" + (!props.isDisabled ? computedId : "");
 
     const tab = {
       name: props.tabName,
@@ -98,7 +98,7 @@ export default {
 
     const tabClicked = (tabHash, event) => {
       store.selectTab(tabHash, context, event);
-    }
+    };
 
     watch(
       () => store.activeTabHash,
@@ -125,7 +125,8 @@ export default {
     return {
       tab,
       store,
-      tabClicked
+      tabClicked,
+    };
   },
 };
 </script>
