@@ -22,6 +22,8 @@ function selectTab(selectedTabHash, context, event) {
 
   const selectedTab = methods.findTab(selectedTabHash);
 
+  state.storageKey = state.storageKey + selectedTabHash;
+
   if (!selectedTab) {
     return;
   }
@@ -44,7 +46,7 @@ function selectTab(selectedTabHash, context, event) {
 
   state.lastActiveTabHash = state.activeTabHash = selectedTab.hash;
 
-  expiringStorage.set(state.storageKey, selectedTab.hash, state.cacheLifetime);
+  expiringStorage.set(uniqueKey, selectedTab.hash, state.cacheLifetime);
 }
 
 const methods = {
