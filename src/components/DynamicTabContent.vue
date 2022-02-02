@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { inject, watch, ref, onBeforeMount, onBeforeUnmount } from "vue";
+import { inject, watch, ref, onMounted } from "vue";
 import store from "../store/dynamicTabs";
 export default {
   name: "DynamicTabContent",
@@ -49,6 +49,11 @@ export default {
         isActive.value = tab.hash === store.state.activeTabHash;
       }
     );
+
+    onMounted(() => {
+      tab = store.methods.findTabByName(props.tabName);
+      isActive.value = tab.hash === store.state.activeTabHash;
+    }
 
     return {
       tab,
