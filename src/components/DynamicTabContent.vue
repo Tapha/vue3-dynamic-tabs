@@ -53,7 +53,7 @@ export default {
     onMounted(() => {
       tab = store.methods.findTabByName(props.tabName);
       isActive.value = tab.hash === store.state.activeTabHash;
-    }
+    });
 
     return {
       tab,
