@@ -34,6 +34,10 @@ import {
 export default {
   name: "DynamicTab",
   props: {
+    id: {
+      type: String,
+      default: null,
+    },
     tag: {
       type: String,
       default: "button",
@@ -79,7 +83,14 @@ export default {
 
     const header = props.prefix + props.tabName + props.suffix;
     const computedId = uuid;
-    const hash = "#" + (!props.isDisabled ? computedId : "");
+
+    let hashTemp = "";
+    if (props.id) {
+      hashTemp = "#" + (!props.isDisabled ? props.id : "");
+    } else {
+      hashTemp = "#" + (!props.isDisabled ? computedId : "");
+    }
+    const hash = hashTemp;
 
     const tab = {
       name: props.tabName,
@@ -112,10 +123,6 @@ export default {
 
     onBeforeUnmount(() => {
       store.methods.deleteTab(computedId);
-    });
-
-    onMounted(() => {
-      console.log(store);
     });
 
     return {

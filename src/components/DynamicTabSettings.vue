@@ -21,13 +21,11 @@ export default {
       type: Object,
       required: false,
       default: () => ({
-        useUrlFragment: true,
+        useUrlFragment: false,
         defaultTabHash: null,
       }),
     },
   },
-
-  emits: ["changed"],
 
   setup(props, context) {
     store.state.cacheLifetime = props.cacheLifetime;
@@ -39,15 +37,13 @@ export default {
         return;
       }
 
-      /* May want to remove this */
-      // window.addEventListener("hashchange", () =>
-      //   store.selectTab(window.location.hash)
-      // );
-
-      // if (store.methods.findTab(window.location.hash)) {
-      //   store.selectTab(window.location.hash);
-      //   return;
-      // }
+      if (store.state.useUrlFragment) {
+        window.addEventListener('hashchange', () => store.selectTab(window.location.hash));
+        if (store.methods.findTab(window.location.hash)) {
+          store.selectTab(window.location.hash);
+          return;
+        }
+      }
 
       const lastComputedId = expiringStorage.get(
         store.state.storageKey

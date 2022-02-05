@@ -121,9 +121,25 @@ On your page you can now use html like this to render tabs:
 
 By default, it will show the first tab.
 
-If you click on a tab a `href` representation of the name will be append to the url. For example clicking on the tab `Second tab` will append `#second-tab` to the url.
+### Enabling tab hash URL Fragments at the end of your URL's
 
-When loading a page with a fragment that matches the `href` of a tab, it will open up that tab. For example visiting `/#third-tab` will open up the tab with name `Third tab`.
+If you enable the `useUrlFragment` option in the `dynamic-tab-settings` component, `preventDefault` will not be applied to tab clicks and the tab hash will be appended to your URL. When a page is loaded with this tab hash appended, the tab associated with this tab hash will be opened.
+
+```html
+<div>
+  <dynamic-tab-settings
+    :options="{
+        useUrlFragment: true
+      }"
+  />
+</div>
+```
+
+If you click on a tab a `href` representation of the name will be append to the url. For example clicking on the tab `Second tab` will append the related `#{tabHash}` to the url.
+
+This setting allows enables opening tabs by the `#{tabHash}` at the end of your url will open the relevant tab that that tabHash is associated with.
+
+This is set to `false` by default.
 
 ### Remembering the last opened tab
 
@@ -135,20 +151,30 @@ You can change the cache lifetime by passing the lifetime in minutes in the `cac
 <dynamic-tab-settings cache-lifetime="10" />
 ```
 
-### Disable modifying the url fragment
+### Customizing tab URL fragments
 
-When using with other libraries that use the url fragment, you can disable modifying the url fragment by passing the `useUrlFragment` options. This helps using it with vue-router, or using vue3-tabs-component twice in the same page.
+When clicking on a tab it's name will be used as a fragment in the url. For example clicking on the `Second tab` will append `#second-tab` to the current url.
+
+You can customize that fragment by using the `id` attribute.
 
 ```html
-<dynamic-tab-settings :options="{ useUrlFragment: false }" />
+<div>
+  <dynamic-tab id="custom-fragment" name="My tab">
+    First tab content
+  </dynamic-tab>
+</div>
 ```
+
+Clicking on `My tab` will then append `#custom-fragment` to the url.
 
 ### Callbacks
 
 Tabs have two events to which you can bind: `changed` and `clicked`
 
 ```html
-<dynamic-tab @clicked="tabClicked" @changed="tabChanged"> ... </dynamic-tab>
+<dynamic-tab @clicked="tabClicked" @changed="tabChanged">
+    ...
+</dynamic-tab>
 ```
 
 For example:
@@ -186,22 +212,6 @@ You can add a suffix and a prefix to the tab by using the `suffix` and `prefix` 
 The title of the tab will now be `my prefix - First tab - my suffix`.
 
 The fragment that's added to the url when clicking the tab will only be based on the `name` of a tab, the `name-prefix` and `name-suffix` attributes will be ignored.
-
-### Customizing fragments
-
-When clicking on a tab it's name will be used as a fragment in the url. For example clicking on the `Second tab` will append `#second-tab` to the current url.
-
-You can customize that fragment by using the `id` attribute.
-
-```html
-<div>
-  <dynamic-tab id="custom-fragment" name="My tab">
-    First tab content
-  </dynamic-tab>
-</div>
-```
-
-Clicking on `My tab` will then append `#custom-fragment` to the url.
 
 ### Setting a default tab
 
